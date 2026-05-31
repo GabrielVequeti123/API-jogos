@@ -111,4 +111,31 @@ def update_jogo(jogo_id, jogo_data):
     response.headers['Content-Type'] = 'application/json'  # Define que a resposta é em JSON
     return response
 
+def delete_jogo(jogo_id):
+    jogo = Jogo.query.get(jogo_id)
+
+    if not jogo:
+        response = make_response(
+            json.dumps(
+                {'mensagem': 'Jogo não encontrado.'},
+                ensure_ascii=False
+            ),
+            404
+        )
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    db.session.delete(jogo)
+    db.session.commit()
+
+    response = make_response(
+        json.dumps(
+            {'mensagem': 'Jogo removido com sucesso.'},
+            ensure_ascii=False
+        ),
+        200
+    )
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
 
